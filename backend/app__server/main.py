@@ -42,7 +42,11 @@ def cleanup_sessions():
         del DATA_STORE[session_id]
 
 
-app = FastAPI()
+app = FastAPI(
+    root_path="/api",
+    docs_url="/docs",
+    openapi_url="/openapi.json",
+)
 
 app.add_middleware(
     CORSMiddleware,
