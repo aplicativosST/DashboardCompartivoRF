@@ -1,10 +1,7 @@
-import os
-import sys
+from fastapi import FastAPI
 
-CURRENT_DIR = os.path.dirname(__file__)
-PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, ".."))
+app = FastAPI()
 
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
-
-from app__server.main import app
+@app.get("/")
+def root():
+    return {"message": "index alive"}
