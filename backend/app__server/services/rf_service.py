@@ -24,7 +24,7 @@ def extract_monthly_spot_service(session: dict, scenario: str):
     if session["monthly"] is None:
         raise HTTPException(status_code=404, detail="Monthly results not found")
 
-    validate_scenario(session, scenario)
+    validate_scenario(session["monthly"], scenario)
     return spot_monthly_data_extraction(session["monthly"], scenario)
 
 
@@ -32,7 +32,7 @@ def extract_monthly_var_service(session: dict, scenario: str, var_name: str, pla
     if session["monthly"] is None:
         raise HTTPException(status_code=404, detail="Monthly results not found")
 
-    validate_scenario(session, scenario)
+    validate_scenario(session["monthly"], scenario)
     return variable_monthly_data_extraction(
         session["monthly"],
         scenario,
@@ -45,7 +45,7 @@ def extract_yearly_spot_service(session: dict, scenario: str):
     if session["yearly"] is None:
         raise HTTPException(status_code=404, detail="Yearly results not found")
 
-    validate_scenario(session, scenario)
+    validate_scenario(session["yearly"], scenario)
     return spot_yearly_data_extraction(session["yearly"], scenario)
 
 
@@ -53,7 +53,7 @@ def extract_yearly_var_service(session: dict, scenario: str, var_name: str, plan
     if session["yearly"] is None:
         raise HTTPException(status_code=404, detail="Yearly results not found")
 
-    validate_scenario(session, scenario)
+    validate_scenario(session["yearly"], scenario)
     return variable_yearly_data_extraction(
         session["yearly"],
         scenario,
@@ -62,12 +62,18 @@ def extract_yearly_var_service(session: dict, scenario: str, var_name: str, plan
     )
 
 
-def validate_scenario(session: dict, scenario: str):
+def validate_scenario(compiled_data: dict, scenario: str):
     if not scenario:
         raise HTTPException(status_code=400, detail="Scenario not found")
 
-    if scenario not in session["scenarios"]:
+    if not compiled_data:
+        raise HTTPException(status_code=400, detail="No compiled data available")
+
+    first_case = next(iter(compiled_data))
+    available_scenarios = compiled_data[first_case].keys()
+
+    if scenario not in available_scenarios:
         raise HTTPException(
             status_code=400,
-            detail=f"Scenario '{scenario}' is not available in this session"
+            detail=f"Scenario '{scenario}' is not available in extracted results"
         )
