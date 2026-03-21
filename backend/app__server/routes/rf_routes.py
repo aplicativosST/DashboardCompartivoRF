@@ -1,4 +1,5 @@
 from typing import Optional
+
 from fastapi import APIRouter, File, Form, UploadFile
 
 from app__server.core.session_store import session_store
@@ -53,9 +54,9 @@ def get_sheet_names(payload: SessionPayload):
 @router.post("/extract_data_excel")
 def extract_data_excel(payload: ExtractSheetDataPayload):
     session = session_store.get_session(payload.session_id)
-    extract_excel_data_service(session, payload.sheet_names)
+    result = extract_excel_data_service(session, payload.sheet_names)
     session_store.touch_session(payload.session_id)
-    return {"message": "Data extracted successfully"}
+    return result
 
 
 @router.post("/extract_monthly_spot_data", response_model=SpotResultPayload)

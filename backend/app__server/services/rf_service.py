@@ -19,6 +19,12 @@ def extract_excel_data_service(session: dict, sheet_names: list[str]):
     session["monthly"] = monthly_results
     session["yearly"] = yearly_results
 
+    return {
+        "message": "Data extracted successfully",
+        "monthly": monthly_results,
+        "yearly": yearly_results,
+    }
+
 
 def extract_monthly_spot_service(session: dict, scenario: str):
     if session["monthly"] is None:
