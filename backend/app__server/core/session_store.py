@@ -5,7 +5,7 @@ import tempfile
 from typing import Dict, Any, Optional
 from fastapi import UploadFile, HTTPException
 
-from app.core.config import SESSION_TTL
+from app__server.core.config import SESSION_TTL
 
 
 class SessionStore:
