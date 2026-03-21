@@ -1,0 +1,2 @@
+SESSION_TTL = 3600
+API_ROOT_PATH = "/api"
