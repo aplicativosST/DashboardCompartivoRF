@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app__server.api.routes.rf_routes import router as rf_router
 
 app = FastAPI()
 
@@ -11,7 +12,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-@app.get("/api/")
-def root():
-    return {"message": "main + cors alive"}
+app.include_router(rf_router)
